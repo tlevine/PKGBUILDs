@@ -1,9 +1,9 @@
 # Maintainer: Thomas Levine <perluette@thomaslevine.com>
 pkgname=kanso-git
-pkgver=master
+pkgver=20120211
 pkgrel=1
 pkgdesc="The comprehensive CouchApp build tool"
-arch=()
+arch=('i686' 'x86_64')
 url="http://kan.so"
 license=('Apache')
 groups=()
@@ -17,7 +17,7 @@ backup=()
 options=()
 install=
 changelog=
-source=($pkgname-$pkgver.tar.gz)
+source=()
 noextract=()
 md5sums=() #generate with 'makepkg -g'
 
@@ -33,7 +33,7 @@ build() {
   if [ -d ${_gitname} ] ; then
     cd ${_gitname} && git pull origin ${_gitbranch}
   else
-    git clone ${_gitroot} ${_gitname}
+    git clone ${_gitroot} ${_gitname} && cd ${_gitname}
   fi
 
   msg "Loading submodules"
