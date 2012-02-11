@@ -1,0 +1,46 @@
+# Maintainer: Thomas Levine <perluette@thomaslevine.com>
+pkgname=kanso-git
+pkgver=master
+pkgrel=1
+pkgdesc="The comprehensive CouchApp build tool"
+arch=()
+url="http://kan.so"
+license=('Apache')
+groups=()
+depends=()
+makedepends=('git' 'nodejs')
+optdepends=()
+provides=()
+conflicts=()
+replaces=()
+backup=()
+options=()
+install=
+changelog=
+source=($pkgname-$pkgver.tar.gz)
+noextract=()
+md5sums=() #generate with 'makepkg -g'
+
+_gitroot="git://github.com/caolan/kanso.git"
+_gitname="kanso"
+_gitbranch="master"
+
+build() {
+  #cd "$srcdir/$pkgname-$pkgver"
+  cd "${srcdir}"
+  msg "Connecting to GIT server"
+ 
+  if [ -d ${_gitname} ] ; then
+    cd ${_gitname} && git pull origin ${_gitbranch}
+  else
+    git clone ${_gitroot} ${_gitname}
+  fi
+
+  msg "Loading submodules"
+  git submodule init
+  git submodule update
+  
+  msg "Building"
+  make
+  make DESTDIR="$pkgdir/" install
+}
